@@ -739,11 +739,12 @@
         </select>
       </label>
       <div class="modal-actions">
-        <button type="button" id="copyLink">复制链接</button>
+        <button type="button" id="makeShort">生成短链接</button>
+        <button type="button" id="copyLink" class="ghost">复制原链接</button>
         <button type="button" id="previewLink" class="ghost">预览</button>
         <button type="button" id="closeMaker" class="ghost">关闭</button>
       </div>
-      <p class="tip" id="makerTip">填好后复制链接发给 TA，打开就是专属贺卡。</p>
+      <p class="tip" id="makerTip">填好后生成短链接发给 TA，点开才会看到贺卡内容。</p>
     </div>
   </div>
 
@@ -836,7 +837,7 @@
         fields.note.value = noteText;
         fields.from.value = from;
         fields.theme.value = theme;
-        tip.textContent = "填好后复制链接发给 TA，打开就是专属贺卡。";
+        tip.textContent = "填好后生成短链接发给 TA，点开才会看到贺卡内容。";
         modal.hidden = false;
       }
 
@@ -901,6 +902,46 @@
 
       document.getElementById("previewLink").addEventListener("click", function () {
         window.open(buildUrl(), "_blank", "noopener");
+      });
+
+      // 通过 spoo.me 生成短链接（免费、支持跨域）；失败时提示改用原链接
+      function shortenUrl(longUrl) {
+        var body = new URLSearchParams();
+        body.set("url", longUrl);
+        return fetch("https://spoo.me/", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: body.toString()
+        }).then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        });
+      }
+
+      var shortBtn = document.getElementById("makeShort");
+      shortBtn.addEventListener("click", function () {
+        var longUrl = buildUrl();
+        shortBtn.disabled = true;
+        tip.textContent = "正在生成短链接…";
+        shortenUrl(longUrl).then(function (data) {
+          if (!data || !data.short_url) {
+            throw new Error((data && data.error) || "服务未返回短链接");
+          }
+          var shortUrl = data.short_url.replace(/^http:\/\//i, "https://");
+          return copyText(shortUrl).then(function (ok) {
+            tip.textContent = ok
+              ? "✅ 短链接已复制，去发给 TA 吧：" + shortUrl
+              : "短链接生成成功（复制失败，请手动复制）：" + shortUrl;
+          });
+        }).catch(function (err) {
+          tip.textContent = "短链接生成失败（" + (err && err.message ? err.message : "网络异常") +
+            "）。可改用「复制原链接」，效果相同。";
+        }).finally(function () {
+          shortBtn.disabled = false;
+        });
       });
     })();
   </script>
