@@ -43,6 +43,58 @@
       --deep: #6f2c45;
     }
 
+    body[data-theme="blue"] {
+      --bg: #eef5ff;
+      --bg2: #ffffff;
+      --ink: #1d2b44;
+      --muted: #5f7192;
+      --rule: #d7e4f7;
+      --accent: #4f8cff;
+      --accent2: #79c8ff;
+      --glow: #dbe9ff;
+      --shadow: #a9c2e8;
+      --deep: #21457e;
+    }
+
+    body[data-theme="purple"] {
+      --bg: #f7f2ff;
+      --bg2: #ffffff;
+      --ink: #2c2140;
+      --muted: #75658f;
+      --rule: #e6dcf7;
+      --accent: #9a6cf0;
+      --accent2: #cfa6ff;
+      --glow: #ebdfff;
+      --shadow: #c4abe4;
+      --deep: #4b2a83;
+    }
+
+    body[data-theme="green"] {
+      --bg: #eefaf3;
+      --bg2: #ffffff;
+      --ink: #1c2b22;
+      --muted: #5e7a6a;
+      --rule: #cfe9db;
+      --accent: #2faa78;
+      --accent2: #8fe0b4;
+      --glow: #d8f5e5;
+      --shadow: #9fd3b6;
+      --deep: #175c3d;
+    }
+
+    body[data-theme="gold"] {
+      --bg: #fff9ee;
+      --bg2: #ffffff;
+      --ink: #33240f;
+      --muted: #846f56;
+      --rule: #f0e0c2;
+      --accent: #ef9543;
+      --accent2: #ffd166;
+      --glow: #ffefd4;
+      --shadow: #e3c48c;
+      --deep: #83501a;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -326,7 +378,7 @@
     }
 
     .letter::before {
-      content: "Dear friend";
+      content: attr(data-dear);
       position: absolute;
       right: clamp(24px, 5vw, 42px);
       top: -28px;
@@ -347,6 +399,15 @@
       margin: 0 0 14px;
       color: var(--muted);
       font-size: 17px;
+    }
+
+    .letter p.custom-msg {
+      padding: 14px 16px;
+      color: var(--deep);
+      font-weight: 700;
+      background: color-mix(in srgb, var(--glow) 45%, transparent);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
     }
 
     mark.key {
@@ -433,6 +494,98 @@
       text-align: center;
     }
 
+    .fab {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 20;
+      padding: 12px 18px;
+      font-size: 14px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: color-mix(in srgb, var(--ink) 42%, transparent);
+    }
+
+    .modal[hidden] {
+      display: none;
+    }
+
+    .modal-card {
+      width: min(440px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      padding: 26px;
+      background: var(--bg2);
+      border: 1px solid var(--rule);
+      border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-card h3 {
+      margin: 0 0 6px;
+      color: var(--deep);
+      font-size: 22px;
+    }
+
+    .modal-card label {
+      display: grid;
+      gap: 6px;
+      margin: 12px 0 0;
+      color: var(--deep);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .modal-card input,
+    .modal-card textarea,
+    .modal-card select {
+      width: 100%;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      font: inherit;
+      font-weight: 400;
+    }
+
+    .modal-card textarea {
+      resize: vertical;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .modal-actions button {
+      padding: 11px 18px;
+    }
+
+    button.ghost {
+      color: var(--deep);
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      box-shadow: none;
+    }
+
+    .tip {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      word-break: break-all;
+    }
+
     @media (max-width: 760px) {
       main {
         padding: 14px;
@@ -484,19 +637,19 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="pink">
   <div class="confetti" aria-hidden="true">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
   <main>
-    <article class="card" aria-label="20岁生日贺卡">
+    <article class="card" aria-label="生日贺卡">
       <section class="hero">
         <div>
-          <p class="eyebrow">送给你的 20 岁</p>
-          <h1><span>20</span><span class="title-line">岁生日快乐</span></h1>
-          <p class="subtitle">
+          <p class="eyebrow" id="eyebrow">送给你的 20 岁</p>
+          <h1><span id="ageBig">20</span><span class="title-line">岁生日快乐</span></h1>
+          <p class="subtitle" id="subtitle">
             愿你从今天开始，继续带着热爱、勇气和一点点好运，走向更开阔的世界。
           </p>
         </div>
@@ -514,12 +667,13 @@
       </section>
 
       <section class="message">
-        <div class="letter">
-          <h2>亲爱的朋友，欢迎来到 20 岁。</h2>
+        <div class="letter" id="letter" data-dear="Dear friend">
+          <h2 id="letterTitle">亲爱的朋友，欢迎来到 20 岁。</h2>
           <p>
-            20 岁不是必须立刻变得成熟的起点，而是你可以更勇敢地选择自己人生的开始。
+            <span id="ageInText">20</span> 岁不是必须立刻变得成熟的起点，而是你可以更勇敢地选择自己人生的开始。
             希望你在新的一岁里，<mark class="key">有喜欢的事可做，有想见的人可见，也有足够的底气做自己</mark>。
           </p>
+          <p class="custom-msg" id="customMsg" hidden></p>
           <p>
             愿你保持好奇，遇到难题时不慌张；愿你认真生活，也别忘了偶尔放松；
             愿这一年回头看时，装满了值得笑出来的瞬间。
@@ -543,26 +697,212 @@
           <div class="secret">
             <button type="button" id="openWish">点开一份隐藏祝福</button>
             <div class="hidden-note" id="hiddenNote" aria-live="polite">
-              生日快乐。愿你的 20 岁，永远有光、有梦、有朋友在身旁。
+              生日快乐。愿你的 <span id="ageNote">20</span> 岁，永远有光、有梦、有朋友在身旁。
             </div>
           </div>
         </div>
       </section>
 
       <footer>
-        领先一分钟2026
+        <span id="footerFrom">领先一分钟</span><span id="footerYear"></span>
       </footer>
     </article>
   </main>
 
-  <script>
-    const button = document.getElementById("openWish");
-    const note = document.getElementById("hiddenNote");
+  <button class="fab" id="openMaker" type="button">🎁 制作专属链接</button>
 
-    button.addEventListener("click", () => {
-      note.classList.toggle("show");
-      button.textContent = note.classList.contains("show") ? "收起隐藏祝福" : "点开一份隐藏祝福";
-    });
+  <div class="modal" id="makerModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="makerTitle">
+      <h3 id="makerTitle">制作专属生日链接</h3>
+      <label>送给谁
+        <input id="f-to" type="text" maxlength="20" placeholder="名字，例如：小明">
+      </label>
+      <label>几岁
+        <input id="f-age" type="number" min="1" max="150" placeholder="例如：20">
+      </label>
+      <label>专属祝福（可留空）
+        <textarea id="f-msg" rows="3" maxlength="200" placeholder="写一句只属于 TA 的话，会显示在贺卡正文里"></textarea>
+      </label>
+      <label>隐藏祝福（可留空）
+        <input id="f-note" type="text" maxlength="80" placeholder="点击按钮后才会看到的悄悄话">
+      </label>
+      <label>署名（可留空）
+        <input id="f-from" type="text" maxlength="20" placeholder="默认：领先一分钟">
+      </label>
+      <label>主题色
+        <select id="f-theme">
+          <option value="pink">蜜桃粉</option>
+          <option value="blue">晴空蓝</option>
+          <option value="purple">梦幻紫</option>
+          <option value="green">薄荷绿</option>
+          <option value="gold">暖阳金</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button type="button" id="copyLink">复制链接</button>
+        <button type="button" id="previewLink" class="ghost">预览</button>
+        <button type="button" id="closeMaker" class="ghost">关闭</button>
+      </div>
+      <p class="tip" id="makerTip">填好后复制链接发给 TA，打开就是专属贺卡。</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var THEMES = ["pink", "blue", "purple", "green", "gold"];
+
+      // 同时支持 ? 参数和 # 参数，方便不同渠道分享链接
+      function readParams() {
+        var p = new URLSearchParams(location.search);
+        var hash = location.hash.replace(/^#/, "");
+        if (hash.indexOf("=") !== -1) {
+          new URLSearchParams(hash).forEach(function (v, k) {
+            if (!p.has(k)) p.append(k, v);
+          });
+        }
+        return p;
+      }
+
+      var params = readParams();
+
+      var to = (params.get("to") || "").trim();
+      var age = parseInt((params.get("age") || "").trim(), 10);
+      if (!(age >= 1 && age <= 150)) age = 20;
+      var subtitle = (params.get("subtitle") || "").trim();
+      var msg = (params.get("msg") || "").trim();
+      var noteText = (params.get("note") || "").trim();
+      var from = (params.get("from") || "").trim();
+      var theme = params.get("theme") || "pink";
+      if (THEMES.indexOf(theme) === -1) theme = "pink";
+
+      var name = to || "朋友";
+
+      // 根据统一的参数配置渲染整封贺卡
+      document.body.dataset.theme = theme;
+      document.title = (to ? to + " · " : "") + age + "岁生日快乐";
+      document.querySelector(".card").setAttribute(
+        "aria-label", (to ? "送给" + to + "的" : "") + age + "岁生日贺卡"
+      );
+
+      document.getElementById("eyebrow").textContent =
+        (to ? "送给 " + to + " 的" : "送给你的") + " " + age + " 岁";
+      document.getElementById("ageBig").textContent = age;
+      if (subtitle) document.getElementById("subtitle").textContent = subtitle;
+
+      document.getElementById("letter").dataset.dear = to ? "Dear " + to : "Dear friend";
+      document.getElementById("letterTitle").textContent =
+        "亲爱的" + name + "，欢迎来到 " + age + " 岁。";
+      document.getElementById("ageInText").textContent = age;
+      document.getElementById("ageNote").textContent = age;
+
+      var customMsg = document.getElementById("customMsg");
+      if (msg) {
+        customMsg.textContent = msg;
+        customMsg.hidden = false;
+      }
+
+      if (noteText) document.getElementById("hiddenNote").textContent = noteText;
+
+      document.getElementById("footerFrom").textContent = from || "领先一分钟";
+      document.getElementById("footerYear").textContent = new Date().getFullYear();
+
+      // 隐藏祝福展开/收起
+      var button = document.getElementById("openWish");
+      var note = document.getElementById("hiddenNote");
+      button.addEventListener("click", function () {
+        note.classList.toggle("show");
+        button.textContent = note.classList.contains("show") ? "收起隐藏祝福" : "点开一份隐藏祝福";
+      });
+
+      // 专属链接生成器
+      var makerBtn = document.getElementById("openMaker");
+      var modal = document.getElementById("makerModal");
+      var tip = document.getElementById("makerTip");
+      var fields = {
+        to: document.getElementById("f-to"),
+        age: document.getElementById("f-age"),
+        msg: document.getElementById("f-msg"),
+        note: document.getElementById("f-note"),
+        from: document.getElementById("f-from"),
+        theme: document.getElementById("f-theme")
+      };
+
+      function openMaker() {
+        fields.to.value = to;
+        fields.age.value = params.get("age") ? age : "";
+        fields.msg.value = msg;
+        fields.note.value = noteText;
+        fields.from.value = from;
+        fields.theme.value = theme;
+        tip.textContent = "填好后复制链接发给 TA，打开就是专属贺卡。";
+        modal.hidden = false;
+      }
+
+      function closeMaker() {
+        modal.hidden = true;
+      }
+
+      function buildUrl() {
+        var base = location.href.split("?")[0].split("#")[0];
+        var p = new URLSearchParams();
+        if (fields.to.value.trim()) p.set("to", fields.to.value.trim());
+        if (fields.age.value.trim()) p.set("age", fields.age.value.trim());
+        if (fields.msg.value.trim()) p.set("msg", fields.msg.value.trim());
+        if (fields.note.value.trim()) p.set("note", fields.note.value.trim());
+        if (fields.from.value.trim()) p.set("from", fields.from.value.trim());
+        if (fields.theme.value !== "pink") p.set("theme", fields.theme.value);
+        var qs = p.toString();
+        return qs ? base + "?" + qs : base;
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).then(
+            function () { return true; },
+            function () { return fallbackCopy(); }
+          );
+        }
+        return Promise.resolve(fallbackCopy());
+
+        function fallbackCopy() {
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          var ok = false;
+          try { ok = document.execCommand("copy"); } catch (e) {}
+          document.body.removeChild(ta);
+          return ok;
+        }
+      }
+
+      makerBtn.addEventListener("click", openMaker);
+      document.getElementById("closeMaker").addEventListener("click", closeMaker);
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) closeMaker();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modal.hidden) closeMaker();
+      });
+
+      document.getElementById("copyLink").addEventListener("click", function () {
+        var url = buildUrl();
+        copyText(url).then(function (ok) {
+          tip.textContent = ok
+            ? "✅ 链接已复制，去发给 TA 吧！"
+            : "复制失败，请手动复制：" + url;
+        });
+      });
+
+      document.getElementById("previewLink").addEventListener("click", function () {
+        window.open(buildUrl(), "_blank", "noopener");
+      });
+    })();
   </script>
 </body>
 </html>
